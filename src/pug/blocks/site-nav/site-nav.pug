@@ -1,0 +1,34 @@
+//- block site-nav
+
+//- mixin getSiteNavListItem(siteMapListItem)
+//- 	li.site-nav__item
+//- 		a.site-nav__link(href= siteNavListItem.href)= siteNavListItem.title
+
+//- mixin getSiteNavList(siteNavList)
+//- 	.site-navigation
+//- 		h3.site-map__title=siteNavList.text
+//- 		ul.site-navigation__list
+//- 			each link in siteNavList.links
+//- 				+getSiteNavListItem(link)
+
+
+
+//- each siteNavItem in siteNavItems
+//- 	+getSiteNavList(siteNavItem)
+
+block site-nav
+
+mixin getSiteNavListItem(siteNavListItem)
+	li.site-nav__item
+		a.site-nav__item-link(href= siteNavListItem.href)= siteNavListItem.title
+
+mixin getSiteNavList(siteNavList)
+	.site-navigation
+		h3.site-nav__title=siteNavList.text
+		ul.site-navigation__list
+		for link in siteNavList.links
+			+getSiteNavListItem(link)
+
+for siteNavItem in siteNavItems
+	+getSiteNavList(siteNavItem)
+
