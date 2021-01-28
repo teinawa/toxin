@@ -1,24 +1,3 @@
-doctype html
-html(lang='ru')
-	head
-		meta(charset="UTF-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		meta(http-equiv="X-UA-Compatible" content="ie=edge")
-		link(rel="icon" href="favicon.ico" type="image/ico")
-		title Поиск номеров в отеле
-	body
-		header.header
-			.container
-				nav.menu
-					a.menu__link(href="#")
-						img.logo('./../../assets/img/logo.svg' alt="логотип")
-					ul.menu__list-info
-						each name in ['О нас', 'Услуги', 'Вакансии', 'Новости', 'Соглашения']
-							li.menu__list-info__item= name
-					ul.menu__list-user
-						each value, index in {'Войти' : 'login', 'Зарегистрироваться' : 'registration'}
-							li.menu__list-user__item
-								a(class=value+'__link')= index
-		footer.footer
-			.container
-				
+extends ../layouts/main 
+block head
+	- var title = "Бронирование номеров в отеле Toxin"
