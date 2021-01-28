@@ -1,0 +1,38 @@
+-
+	var menuItems = [
+		{text: "О нас", href: "#"},
+		{text: "Услуги", href: "#"},
+		{text: "Вакансии", href: "#"},
+		{text: "Новости", href: "#"},
+		{text: "Соглашения", href: "#"},
+	]
+-
+	var userItems = [
+		{text: "Войти", href: "#", class: "login-link"},
+		{text: "Зарегистрироваться", href: "#", class: "registration-link"},
+	]
+
+mixin getMenuItem(menuItem)
+	li.menu__item
+		a.menu__item-link(href= menuItem.href)=menuItem.text
+
+mixin getUserItem(userItem)
+	li.user__item
+		a(href= userItem.href class= userItem.class)=userItem.text
+
+mixin getMenu(menuItems)
+	ul.menu__list
+		each menuItem in menuItems
+			+getMenuItem(menuItem)
+
+mixin getUser(userItems)
+	ul.user__list
+		each userItem in userItems
+			+getUserItem(userItem)
+
+header.header
+	.container
+		nav.header__menu
+		include ../logo/logo 
+		+getMenu(menuItems)
+		+getUser(userItems)
