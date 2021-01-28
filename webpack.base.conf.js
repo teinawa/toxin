@@ -1,7 +1,9 @@
 const path = require('path')
 const fs = require('fs')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 
@@ -12,9 +14,6 @@ const PATHS = {
   assets: 'assets/'
 }
 
-// Pages const for HtmlWebpackPlugin
-// see more: https://github.com/vedees/webpack-template/blob/master/README.md#html-dir-folder
-// const PAGES_DIR = PATHS.src
 const PAGES_DIR = `${PATHS.src}/pug/pages/`
 const PAGES = fs.readdirSync(PAGES_DIR).filter(fileName => fileName.endsWith('.pug'))
 
@@ -73,39 +72,47 @@ module.exports = {
       test: /\.scss$/,
       use: [
         'style-loader',
-        {
-          loader: MiniCssExtractPlugin.loader,
-          options: {
-            esModule: false,
-          },
-        },
+        // MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
-          options: { sourceMap: true }
-        }, {
-          'loader': 'postcss-loader',
-          'options': {
-            // All postcss options is now under `postcssOptions`
-            'postcssOptions': {
-              'config': path.resolve(PATHS.config, 'postcss.config.js'),
-            },
-            'sourceMap': true,
-          },
-        },{
+          options: {
+            esModule: false,
+            sourceMap: true 
+            }
+        }, 
+        {
+            loader: 'postcss-loader',
+            'options': {
+                // All postcss options is now under `postcssOptions`
+                'postcssOptions': {
+                  'config': path.resolve(PATHS.config, 'postcss.config.js'),
+                },
+                'sourceMap': true,
+              },
+          }, 
+        {
+          loader: 'resolve-url-loader',
+          options: {
+            root: `${PATHS.src}/${PATHS.assets}/styles`,
+          }
+        }, 
+        {
           loader: 'sass-loader',
           options: { sourceMap: true }
-        }
+        },
       ]
     }, {
       test: /\.css$/,
       use: [
         'style-loader',
+        // MiniCssExtractPlugin.loader,
         {
-          loader: MiniCssExtractPlugin.loader,
+          loader: 'css-loader',
           options: {
             esModule: false,
-          },
-        },
+            sourceMap: true 
+            }
+        }, 
         {
           loader: 'css-loader',
           options: { sourceMap: true }
@@ -119,6 +126,12 @@ module.exports = {
             'sourceMap': true,
           },
         },
+        {
+          loader: 'resolve-url-loader',
+          options: {
+            root: path.join(__dirname, 'src')
+          }
+        }, 
       ]
     }]
   },
@@ -130,6 +143,11 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[hash].css`,
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
     }),
     new CopyWebpackPlugin({
       patterns: [
